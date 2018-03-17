@@ -1,14 +1,7 @@
 version: '3'
 services:
   web:
-    build:
-      context: ./
-    image: davidbarratt/barrattwedding
+    build: ./
+    image: boggswedding/api
     env_file:
       - .env
-  cache:
-    image: davidbarratt/varnish
-    environment:
-      VIRTUAL_HOST: barrattwedding.com,www.barrattwedding.com,origin.barrattwedding.com
-    links:
-      - web:backend

@@ -3,9 +3,19 @@ services:
   web:
     links:
       - smtp
-  cache:
+      - database
     ports:
       - 8888:80
+    volumes:
+      - ./:/var/www
+  database:
+    image: mariadb:10.1
+    env_file:
+      - .env
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
   smtp:
     image: sj26/mailcatcher
     ports:

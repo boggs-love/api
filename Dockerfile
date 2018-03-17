@@ -1,52 +1,63 @@
 # Builder
 FROM composer as builder
-
-# All of the Environment Arguments can be used.
-ENV SYMFONY_ENV prod
-ENV SYMFONY_DEBUG 0
-ENV SYMFONY__SECRET 6b91251b5855897443ec29a12c8b1aa5
-ENV SYMFONY__DATABASE_URL sqlite:///%kernel.root_dir%/../app/data/data.db
-ENV SYMFONY__MAILER_URL=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__CONSUMER_KEY=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__CONSUMER_SECRET=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__ACCESS_KEY=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__ACCESS_KEY_SECRET=
-
+ENV APP_ENV prod
 COPY ./ /app
-
 RUN composer --no-dev install
 
-RUN /app/app/console assetic:dump
-
 # Service
-FROM davidbarratt/php:5.6
+FROM php:7.2-apache
 
-# All of the Environment Arguments can be used.
-ENV SYMFONY_ENV prod
-ENV SYMFONY_DEBUG 0
-ENV SYMFONY__SECRET 6b91251b5855897443ec29a12c8b1aa5
-ENV SYMFONY__DATABASE_URL sqlite:///%kernel.root_dir%/../app/data/data.db
-ENV SYMFONY__MAILER_URL=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__CONSUMER_KEY=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__CONSUMER_SECRET=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__ACCESS_KEY=
-ENV SYMFONY__WEDDING_TWITTER__TWITTER__ACCESS_KEY_SECRET=
+RUN a2enmod rewrite env
+
+# System Dependencies.
+RUN apt-get update && apt-get install -y \
+        libicu-dev \
+	--no-install-recommends && rm -r /var/lib/apt/lists/*
+
+RUN set -ex \
+	&& buildDeps=' \
+		libsqlite3-dev \
+	' \
+	&& apt-get update && apt-get install -y --no-install-recommends $buildDeps && rm -rf /var/lib/apt/lists/* \
+  && docker-php-ext-install intl opcache pdo_mysql pdo_sqlite \
+	&& apt-get purge -y --auto-remove $buildDeps
+
+# set recommended PHP.ini settings
+# see https://secure.php.net/manual/en/opcache.installation.php
+RUN { \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=60'; \
+		echo 'opcache.fast_shutdown=1'; \
+		echo 'opcache.enable_cli=1'; \
+	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+
+# Environment
+ENV APP_ENV prod
+ENV APP_DEBUG 0
+ENV DATABASE_URL sqlite:////var/www/var/data/data.db
+ENV MAILER_URL null://localhost
+ENV CORS_ALLOW_ORIGIN ^https?://localhost:?[0-9]*$
+ENV SITE_NAME Example
+ENV SITE_EMAIL mail@example.com
+ENV BRIDE_NAME Awesome
+ENV BRIDE_EMAIL awesome@example.com
+ENV GROOM_NAME Sauce
+ENV GROOM_EMAIL sauce@example.com
 
 # Copy the app and all the dependencies
 COPY --from=builder /app /var/www
 
-# Add the Composer bin to the PATH
-ENV PATH="/var/www/vendor/bin:${PATH}"
-
 # Touch the SQLite Database and set the permissions
-RUN mkdir -p ../app/data \
-    && touch ../app/data/data.db \
-    && chown -R www-data:www-data ../app/data
+RUN mkdir -p ../var/data \
+    && chmod 777 ../var/data \
+    && touch ../var/data/data.db \
+    && chown www-data:www-data ../var/data/data.db
 
-# Clear the cache & Create the database schema
-RUN ../app/console cache:clear \
-  && chown -R www-data:www-data ../app/logs \
-  && chown -R www-data:www-data ../app/cache \
-  && ../app/console doctrine:schema:create
-
-CMD [ "../bin/start" ]
+# Create the database schema and load the fixtures
+# RUN ../bin/console doctrine:schema:create \
+#     && ../bin/console doctrine:fixtures:load --fixtures=../src/DataFixtures/ORM\
+RUN ../bin/console cache:clear \
+  && chown -R www-data:www-data ../var \
+  && ../bin/console doctrine:schema:create

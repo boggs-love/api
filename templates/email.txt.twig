@@ -1,0 +1,30 @@
+Attending: {% if rsvp.attending %}Yes{% else %}No{% endif %}
+
+
+{% if rsvp.firstname %}
+First Name: {{ rsvp.firstname }}
+{% endif %}
+
+{% if rsvp.lastname %}
+Last Name: {{ rsvp.lastname }}
+{% endif %}
+
+{% if rsvp.email %}
+Email: {{ rsvp.email }}
+{% endif %}
+
+{% if rsvp.phone %}
+Phone: {{ rsvp.phone }}
+{% endif %}
+
+{% if rsvp.guest %}
+Guests:
+{% for guest in rsvp.guest %}
+{{ guest.firstname }} {{ guest.lastname }}
+{% endfor %}
+{% endif %}
+
+{% if rsvp.note %}
+Note:
+{{ rsvp.note }}
+{% endif %}

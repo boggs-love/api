@@ -1,10 +1,7 @@
-/.env
-/web/bundles/*
-/web/css/*
-/web/js/*
-/web/images/*
-/app/bootstrap*
-/app/cache/*
-/app/logs/*
-/build
-/vendor
+
+###> symfony/framework-bundle ###
+.env
+/html/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###

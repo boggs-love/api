@@ -1,47 +1,74 @@
 {
-    "name": "davidbarratt/barrattwedding",
+    "name": "boggswedding/api",
     "type": "project",
-    "description": "Barratt Wedding",
-    "autoload": {
-        "psr-0": { "": "src/" }
-    },
+    "license": "AGPL-3.0-or-later",
     "require": {
-        "symfony/symfony": "^2.3.0",
-        "doctrine/orm": "^2.2.3",
-        "doctrine/doctrine-bundle": "^1.2.0",
-        "twig/extensions": "^1.0.0",
-        "symfony/assetic-bundle": "^2.3.0",
-        "symfony/swiftmailer-bundle": "^2.3.0",
-        "symfony/monolog-bundle": "^2.3.0",
-        "sensio/distribution-bundle": "^2.3.0",
-        "sensio/framework-extra-bundle": "^2.3.0",
-        "sensio/generator-bundle": "^2.3.0",
-        "doctrine/doctrine-migrations-bundle": "^1.2.1",
-        "guzzle/guzzle": "^3.7.0"
+        "php": "^7.1.3",
+        "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "^1.8",
+        "doctrine/orm": "^2.6",
+        "geosocio/http-serializer-bundle": "^2.0",
+        "robinvdvleuten/ulid": "^1.1",
+        "sensio/framework-extra-bundle": "^5.1",
+        "symfony/console": "^4.0",
+        "symfony/flex": "^1.0",
+        "symfony/framework-bundle": "^4.0",
+        "symfony/lts": "^4.0",
+        "symfony/monolog-bundle": "^3.2",
+        "symfony/property-access": "^4.0",
+        "symfony/property-info": "^4.0",
+        "symfony/swiftmailer-bundle": "^3.2",
+        "symfony/twig-bundle": "^4.0",
+        "symfony/yaml": "^4.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.2",
+        "symfony/var-dumper": "^4.0"
     },
     "config": {
-      "platform": {
-        "php": "5.6"
-      }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
-        ],
-        "post-update-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
-        ]
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
     "extra": {
-        "symfony-app-dir": "app",
-        "symfony-web-dir": "html"
+        "symfony": {
+            "id": "01C77HBYGJYBK4RWDDBK2GB501",
+            "allow-contrib": false
+        },
+        "public-dir": "html"
     }
 }
