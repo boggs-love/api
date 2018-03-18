@@ -850,16 +850,16 @@
         },
         {
             "name": "geosocio/http-serializer",
-            "version": "5.1.2",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geosocio/http-serializer.git",
-                "reference": "8eb45b18905fe25e56c14dfefb2000150a281b27"
+                "reference": "aa7f9c6b2e39d147d3e53ee13e0cafce11f5fc42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geosocio/http-serializer/zipball/8eb45b18905fe25e56c14dfefb2000150a281b27",
-                "reference": "8eb45b18905fe25e56c14dfefb2000150a281b27",
+                "url": "https://api.github.com/repos/geosocio/http-serializer/zipball/aa7f9c6b2e39d147d3e53ee13e0cafce11f5fc42",
+                "reference": "aa7f9c6b2e39d147d3e53ee13e0cafce11f5fc42",
                 "shasum": ""
             },
             "require": {
@@ -885,7 +885,7 @@
                 "LGPL-3.0-only"
             ],
             "description": "Serializes a Controller Request & Response",
-            "time": "2018-03-05T17:11:42+00:00"
+            "time": "2018-03-18T14:46:31+00:00"
         },
         {
             "name": "geosocio/http-serializer-bundle",

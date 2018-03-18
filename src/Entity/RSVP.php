@@ -44,7 +44,7 @@ class RSVP
      *      max = "255"
      * )
      */
-    private $first_name;
+    private $firstName;
 
     /**
      * @var string
@@ -55,7 +55,7 @@ class RSVP
      *      max = "255"
      * )
      */
-    private $last_name;
+    private $lastName;
 
     /**
      * @var string
@@ -95,6 +95,7 @@ class RSVP
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Guest", mappedBy="rsvp", cascade={"all"})
+     * @Assert\Valid()
      */
     private $guest;
 
@@ -159,18 +160,18 @@ class RSVP
      *
      * @Groups("create")
      *
-     * @param string $first_name
+     * @param string $firstName
      * @return RSVP
      */
-    public function setFirstName(string $first_name) : self
+    public function setFirstName(string $firstName) : self
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     /**
-     * Get first_name
+     * Get first name
      *
      * @Groups("read")
      *
@@ -178,26 +179,26 @@ class RSVP
      */
     public function getFirstName() : string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
     /**
-     * Set last_name
+     * Set lastName
      *
      * @Groups("create")
      *
      * @param string $last_name
      * @return RSVP
      */
-    public function setLastName(string $last_name) : self
+    public function setLastName(string $lastName) : self
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     /**
-     * Get last_name
+     * Get lastName
      *
      * @Groups("read")
      *
@@ -205,7 +206,7 @@ class RSVP
      */
     public function getLastName() : string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
     /**
