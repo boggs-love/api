@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Ulid\Ulid;
 
 /**
@@ -30,6 +31,7 @@ class RSVP
      * @var boolean
      *
      * @ORM\Column(name="attending", type="boolean")
+     * @Assert\NotNull()
      */
     private $attending;
 
@@ -37,6 +39,10 @@ class RSVP
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      max = "255"
+     * )
      */
     private $first_name;
 
@@ -44,6 +50,10 @@ class RSVP
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      max = "255"
+     * )
      */
     private $last_name;
 
@@ -51,6 +61,10 @@ class RSVP
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\Email()
+     * @Assert\Length(
+     *      max = "255"
+     * )
      */
     private $email;
 
@@ -58,6 +72,10 @@ class RSVP
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=20)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      max = "20"
+     * )
      */
     private $phone;
 

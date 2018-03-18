@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Ulid\Ulid;
 
 /**
@@ -34,6 +35,9 @@ class Guest
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
+     * @Assert\Length(
+     *      max = "255"
+     * )
      */
     private $first_name;
 
@@ -41,6 +45,9 @@ class Guest
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255)
+     * @Assert\Length(
+     *      max = "255"
+     * )
      */
     private $last_name;
 
