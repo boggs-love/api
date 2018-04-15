@@ -1,4 +1,7 @@
 {
+    "boggs-love/api-patches": {
+        "version": "1.0.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -64,6 +67,9 @@
     },
     "monolog/monolog": {
         "version": "1.23.0"
+    },
+    "netresearch/composer-patches-plugin": {
+        "version": "1.2.1"
     },
     "paragonie/random_compat": {
         "version": "v2.0.11"
@@ -158,8 +164,8 @@
     "symfony/inflector": {
         "version": "v4.0.6"
     },
-    "symfony/lts": {
-        "version": "4-dev"
+    "symfony/messenger": {
+        "version": "4.1-dev"
     },
     "symfony/monolog-bridge": {
         "version": "v4.0.6"

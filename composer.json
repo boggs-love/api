@@ -1,5 +1,5 @@
 {
-    "name": "boggswedding/api",
+    "name": "boggs-love/api",
     "type": "project",
     "license": "AGPL-3.0-or-later",
     "require": {
@@ -12,8 +12,8 @@
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/console": "^4.0",
         "symfony/flex": "^1.0",
-        "symfony/framework-bundle": "^4.0",
-        "symfony/lts": "^4.0",
+        "symfony/framework-bundle": "^4.1",
+        "symfony/messenger": "^4.1",
         "symfony/monolog-bundle": "^3.2",
         "symfony/property-access": "^4.0",
         "symfony/property-info": "^4.0",

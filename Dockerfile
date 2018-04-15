@@ -12,14 +12,18 @@ RUN a2enmod rewrite env
 # System Dependencies.
 RUN apt-get update && apt-get install -y \
         libicu-dev \
+        librabbitmq-dev \
 	--no-install-recommends && rm -r /var/lib/apt/lists/*
 
+# App Dependencies.
 RUN set -ex \
 	&& buildDeps=' \
 		libsqlite3-dev \
 	' \
 	&& apt-get update && apt-get install -y --no-install-recommends $buildDeps && rm -rf /var/lib/apt/lists/* \
-  && docker-php-ext-install intl opcache pdo_mysql pdo_sqlite \
+    && docker-php-ext-install intl opcache pdo_mysql pdo_sqlite \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp \
 	&& apt-get purge -y --auto-remove $buildDeps
 
 # set recommended PHP.ini settings
@@ -33,10 +37,11 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Environment
+# Default Environment
 ENV APP_ENV prod
 ENV APP_DEBUG 0
 ENV DATABASE_URL sqlite:////var/www/var/data/data.db
+ENV MESSENGER_ADAPTER_DSN amqp://guest:guest@messenger:5672/%2f/messages
 ENV MAILER_URL null://localhost
 ENV CORS_ALLOW_ORIGIN ^https?://localhost:?[0-9]*$
 ENV SITE_NAME Example

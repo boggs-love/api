@@ -4,6 +4,7 @@ services:
     links:
       - smtp
       - database
+      - messenger
     ports:
       - 8888:80
     volumes:
@@ -20,5 +21,9 @@ services:
     image: sj26/mailcatcher
     ports:
       - 1080:1080
+  messenger:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
 volumes:
   db-data:

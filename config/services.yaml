@@ -25,6 +25,7 @@ services:
         - '@doctrine'
         - '@mailer'
         - '@twig'
+        - '@message_bus'
         - '%site%'
         - '%bride%'
         - '%groom%'
