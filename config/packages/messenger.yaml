@@ -4,9 +4,8 @@ framework:
           rsvp:
             dsn: "%env(MESSENGER_ADAPTER_DSN)%"
             options:
-              -
-                name: exchange
-                value:
-                  name: rsvp
+              auto-setup: 'false'
+              exchange:
+                name: rsvp
         routing:
           'App\Entity\RSVP': messenger.sender.rsvp

@@ -25,5 +25,8 @@ services:
     image: rabbitmq:3-management
     ports:
       - 15672:15672
+    volumes:
+      - messenger-data:/var/lib/rabbitmq
 volumes:
   db-data:
+  messenger-data:
