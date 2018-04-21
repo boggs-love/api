@@ -7,5 +7,10 @@ framework:
               auto-setup: 'false'
               exchange:
                 name: rsvp
+        serializer:
+          context:
+            enable_max_depth: true
+            groups:
+              - 'read'
         routing:
           'App\Entity\RSVP': messenger.sender.rsvp
