@@ -27,54 +27,19 @@ class RespondController
     protected $doctrine;
 
     /**
-     * @var \Swift_Mailer
-     */
-    protected $mailer;
-
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
      * @var MessageBusInterface
      */
     protected $messenger;
-
-    /**
-     * @var array
-     */
-    protected $site;
-
-    /**
-     * @var array
-     */
-    protected $bride;
-
-    /**
-     * @var array
-     */
-    protected $groom;
 
     /**
      * Respond Controller
      */
     public function __construct(
         RegistryInterface $doctrine,
-        \Swift_Mailer $mailer,
-        Environment $twig,
-        MessageBusInterface $messenger,
-        array $site,
-        array $bride,
-        array $groom
+        MessageBusInterface $messenger
     ) {
           $this->doctrine = $doctrine;
-          $this->mailer = $mailer;
-          $this->twig = $twig;
           $this->messenger = $messenger;
-          $this->site = $site;
-          $this->bride = $bride;
-          $this->groom = $groom;
     }
 
     /**
@@ -97,29 +62,6 @@ class RespondController
 
         // Notify other services.
         $this->messenger->dispatch($rsvp);
-
-        // // Send email to the bride/groom.
-        // $message = (new \Swift_Message('Wedding RSVP (' . $rsvp->getId() . ')'))
-        //     ->setFrom($this->site)
-        //     ->setReplyTo([
-        //       $rsvp->getEmail() => $rsvp->getFirstName().' '.$rsvp->getLastName(),
-        //     ])
-        //     ->setTo($this->bride + $this->groom)
-        //     ->setBody($this->twig->render('email.txt.twig', ['rsvp' => $rsvp]));
-        //
-        // $this->mailer->send($message);
-        //
-        // // Send email to person filling out the form.
-        // $title = $rsvp->getAttending() ? 'Invitation Accepted' : 'Invitation Declined';
-        // $message = (new \Swift_Message($title))
-        //   ->setFrom($this->site)
-        //   ->setReplyTo($this->bride)
-        //   ->setTo([
-        //     $rsvp->getEmail() => $rsvp->getFirstName().' '.$rsvp->getLastName()
-        //   ])
-        //   ->setBody($this->twig->render('thanks.html.twig', ['attending' => $rsvp->getAttending()]), 'text/html');
-        //
-        // $this->mailer->send($message);
 
         return $rsvp;
     }

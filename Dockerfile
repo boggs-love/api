@@ -42,14 +42,7 @@ ENV APP_ENV prod
 ENV APP_DEBUG 0
 ENV DATABASE_URL sqlite:////var/www/var/data/data.db
 ENV MESSENGER_ADAPTER_DSN amqp://guest:guest@messenger:5672/%2f/messages
-ENV MAILER_URL null://localhost
 ENV CORS_ALLOW_ORIGIN ^https?://localhost:?[0-9]*$
-ENV SITE_NAME Example
-ENV SITE_EMAIL mail@example.com
-ENV BRIDE_NAME Awesome
-ENV BRIDE_EMAIL awesome@example.com
-ENV GROOM_NAME Sauce
-ENV GROOM_EMAIL sauce@example.com
 
 # Copy the app and all the dependencies
 COPY --from=builder /app /var/www

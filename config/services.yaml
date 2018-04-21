@@ -1,12 +1,6 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    bride:
-      '%env(BRIDE_EMAIL)%': '%env(BRIDE_NAME)%'
-    groom:
-      '%env(GROOM_EMAIL)%': '%env(GROOM_NAME)%'
-    site:
-      '%env(SITE_EMAIL)%': '%env(SITE_NAME)%'
     locale: 'en'
 
 services:
@@ -23,9 +17,4 @@ services:
       class: App\Controller\RespondController
       arguments:
         - '@doctrine'
-        - '@mailer'
-        - '@twig'
         - '@message_bus'
-        - '%site%'
-        - '%bride%'
-        - '%groom%'

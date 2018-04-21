@@ -4,13 +4,6 @@ RewriteEngine On
 PassEnv APP_ENV
 PassEnv APP_DEBUG
 PassEnv DATABASE_URL
-PassEnv MAILER_URL
-PassEnv BRIDE_NAME
-PassEnv BRIDE_EMAIL
-PassEnv GROOM_NAME
-PassEnv GROOM_EMAIL
-PassEnv SITE_NAME
-PassEnv SITE_EMAIL
 PassEnv MESSENGER_ADAPTER_DSN
 
 # Determine the RewriteBase automatically and set it as environment variable.
