@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Thanks = ({ attending }) => {
+  const url = 'https://secure3.hilton.com/en_US/hp/reservation/book.htm?ctyhocn=MCOUCHX&corporateCode=0002706981&from=lnrlink';
   if (attending) {
     return (
       <React.Fragment>
-        Thank you for responding to our wedding invitation.<br />
+        Thank you for responding to our wedding invitation.<br /><br />
+        If you are staying at the <a href={url}>Hampton Inn & Suites</a>,
+        please remember to reserve your room by using the following url:<br />
+        <a href={url}>{url}</a><br />
         <br />
         We look forward to seeing you on October 20th!<br />
         <br />
