@@ -1,13 +1,14 @@
 version: '3'
 services:
-  web:
-    links:
-      - database
-      - messenger
+  api:
+    command: 'npm run start-dev'
     ports:
       - 8888:80
     volumes:
-      - ./:/var/www
+      - ./:/app
+    links:
+      - database
+      - smtp
   database:
     image: mariadb:10.1
     env_file:
@@ -16,12 +17,9 @@ services:
       - 3306:3306
     volumes:
       - db-data:/var/lib/mysql
-  messenger:
-    image: rabbitmq:3-management
+  smtp:
+    image: sj26/mailcatcher
     ports:
-      - 15672:15672
-    volumes:
-      - messenger-data:/var/lib/rabbitmq
+      - 1080:1080
 volumes:
   db-data:
-  messenger-data:

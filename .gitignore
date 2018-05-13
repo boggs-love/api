@@ -1,7 +1,3 @@
-
-###> symfony/framework-bundle ###
 .env
-/html/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
+dist/
+node_modules/
