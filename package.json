@@ -19,6 +19,7 @@
     "react-dom": "^16.3.2",
     "sequelize": "^4.37.6",
     "spotify-web-api-node": "^3.1.0",
+    "sqlite3": "^4.0.0",
     "ssacl-attribute-roles": "^1.0.0",
     "ulid": "^2.3.0"
   },
