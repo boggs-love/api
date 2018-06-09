@@ -3,6 +3,7 @@ import ssaclAttributeRoles from 'ssacl-attribute-roles';
 
 const sequalize = new Sequalize(process.env.DATABASE_URL);
 
-ssaclAttributeRoles(sequalize);
+// @TODO This breaks associations.
+// ssaclAttributeRoles(sequalize);
 
 export default sequalize;

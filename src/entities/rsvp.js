@@ -1,7 +1,9 @@
 import Sequelize from 'sequelize';
 import { monotonicFactory } from 'ulid';
-import Guest from './guest';
 import sequelize from '../utils/sequelize';
+import RSVPType from './rsvp-type';
+import Guest from './guest';
+import Song from './song';
 
 const ulid = monotonicFactory();
 
@@ -77,6 +79,19 @@ RSVP.hasMany(Guest, {
       },
     },
   },
+});
+
+RSVP.belongsTo(RSVPType, {
+  foreignKey: {
+    name: 'type',
+    field: 'type',
+    allowNull: false,
+  },
+});
+
+RSVP.belongsToMany(Song, {
+  through: 'rsvp_song',
+  timestamps: false,
 });
 
 export default RSVP;

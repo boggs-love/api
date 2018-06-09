@@ -1,47 +1,29 @@
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
+import sendEmails from '../actions/send-emails';
 import RSVP from '../entities/rsvp';
 import Guest from '../entities/guest';
-import Response from '../components/response';
-import Thanks from '../components/thanks';
-import transport from '../utils/nodemailer-transport';
+import Song from '../entities/song';
 
-const site = process.env.SITE_EMAIL;
-const bride = process.env.BRIDE_EMAIL;
-const groom = process.env.GROOM_EMAIL;
-
-const sendEmails = rsvp => (
-  Promise.all([
-    transport.sendMail({
-      from: site,
-      to: [bride, groom],
-      replyTo: {
-        name: `${rsvp.firstName} ${rsvp.lastName}`,
-        address: rsvp.email,
-      },
-      subject: `Wedding RSVP (${rsvp.id})`,
-      html: ReactDOMServer.renderToStaticNodeStream(<Response rsvp={rsvp} />),
-    }),
-    transport.sendMail({
-      from: site,
-      to: {
-        name: `${rsvp.firstName} ${rsvp.lastName}`,
-        address: rsvp.email,
-      },
-      replyTo: bride,
-      subject: rsvp.attending ? 'Invitation Accepted' : 'Invitation Declined',
-      html: ReactDOMServer.renderToStaticNodeStream(<Thanks attending={rsvp.attending} />),
-    }),
-  ])
-);
-
-const create = async (request, h) => {
+const create = async ({ payload }, h) => {
   // @see https://github.com/mickhansen/ssacl-attribute-roles/issues/13
   // @see https://github.com/sequelize/sequelize/issues/9402
-  const rsvp = await RSVP.build(request.payload, {
+  let rsvp = await RSVP.build(payload, {
     role: 'self',
     include: [Guest],
-  }).save().then(r => r.get({ role: 'self' }));
+  }).save();
+
+  let songs = payload.songs || [];
+  songs = await Promise.all(songs.map(async (song) => {
+    await Song.upsert(song);
+    return Song.build(song, {
+      isNewRecord: false,
+    });
+  }));
+
+  await rsvp.addSongs(songs);
+
+  rsvp = await rsvp.reload({
+    include: [Guest, Song],
+  });
 
   const response = h.response(rsvp);
 

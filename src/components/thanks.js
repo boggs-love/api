@@ -1,7 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Thanks = ({ attending }) => {
+const Thanks = ({ type, attending }) => {
+  if (type === 'rehearsal' && attending) {
+    return (
+      <React.Fragment>
+        Thank you for responding to our rehearsal dinner invitation.<br />
+        <br />
+        We look forward to seeing you on October 19th!<br />
+        <br />
+        Thank you,<br />
+        Jeremy & Amanda<br />
+      </React.Fragment>
+    );
+  }
+
   const url = 'https://secure3.hilton.com/en_US/hp/reservation/book.htm?ctyhocn=MCOUCHX&corporateCode=0002706981&from=lnrlink';
   if (attending) {
     return (
@@ -27,6 +40,7 @@ const Thanks = ({ attending }) => {
 };
 
 Thanks.propTypes = {
+  type: PropTypes.string.isRequired,
   attending: PropTypes.bool.isRequired,
 };
 
