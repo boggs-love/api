@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Response from '../components/response';
 import Thanks from '../components/thanks';
+import createSpotify from '../utils/spotify';
 import transport from '../utils/nodemailer-transport';
 
 const site = process.env.SITE_EMAIL;
@@ -22,19 +23,33 @@ const sendEmails = (rsvp) => {
       break;
   }
 
+  let getTracks = Promise.resolve([]);
+  if (rsvp.songs) {
+    getTracks = createSpotify().then(spotify => (
+      spotify.getTracks(rsvp.songs.map(s => s.id))
+    )).then(data => data.body.tracks)
+      .catch((e) => {
+        console.error(e);
+        return [];
+      });
+  }
+
   return Promise.all([
-    transport.sendMail({
-      from: site,
-      to: [bride, groom],
-      replyTo: {
-        name: `${rsvp.firstName} ${rsvp.lastName}`,
-        address: rsvp.email,
-      },
-      subject: `${title} RSVP (${rsvp.id})`,
-      html: ReactDOMServer.renderToStaticNodeStream(React.createElement(Response, {
-        rsvp,
-      })),
-    }),
+    getTracks.then(tracks => (
+      transport.sendMail({
+        from: site,
+        to: [bride, groom],
+        replyTo: {
+          name: `${rsvp.firstName} ${rsvp.lastName}`,
+          address: rsvp.email,
+        },
+        subject: `${title} RSVP (${rsvp.id})`,
+        html: ReactDOMServer.renderToStaticNodeStream(React.createElement(Response, {
+          rsvp,
+          tracks,
+        })),
+      })
+    )),
     transport.sendMail({
       from: site,
       to: {
@@ -53,7 +68,7 @@ const sendEmails = (rsvp) => {
   ]).catch((e) => {
     console.log('Send Mail Failed');
     console.error(e);
-  })
+  });
 };
 
 export default sendEmails;

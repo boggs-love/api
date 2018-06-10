@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Response = ({ rsvp }) => {
+const Response = ({ rsvp, tracks }) => {
   const attending = (
     <React.Fragment>
       Attending: {rsvp.attending ? 'Yes' : 'No'}<br />
@@ -39,12 +39,28 @@ const Response = ({ rsvp }) => {
 
   const guest = rsvp.guests ? (
     <React.Fragment>
-      Guests:<br />
-      {rsvp.guests.map((g, i) => (
-        <React.Fragment key={i}>
-          {g.firstName} {g.lastName}<br />
-        </React.Fragment>
-      ))}
+      Guests:
+      <ul>
+        {rsvp.guests.map((g, i) => (
+          <li key={i}>
+            {g.firstName} {g.lastName}
+          </li>
+        ))}
+      </ul>
+      <br />
+    </React.Fragment>
+  ) : null;
+
+  const song = tracks ? (
+    <React.Fragment>
+      Songs:
+      <ul>
+        {tracks.map(track => (
+          <li key={track.id}>
+            <a href={`https://open.spotify.com/track/${track.id}`}>{track.name}</a><br />
+          </li>
+        ))}
+      </ul>
       <br />
     </React.Fragment>
   ) : null;
@@ -65,6 +81,7 @@ const Response = ({ rsvp }) => {
       {email}
       {phone}
       {guest}
+      {song}
       {note}
     </React.Fragment>
   );
@@ -80,6 +97,11 @@ Response.propTypes = {
     guests: PropTypes.array,
     note: PropTypes.string,
   }).isRequired,
+  tracks: PropTypes.arrayOf(PropTypes.object),
+};
+
+Response.defaultProps = {
+  tracks: [],
 };
 
 export default Response;

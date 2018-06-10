@@ -1,7 +1,7 @@
 version: '3'
 services:
   api:
-    command: 'npm run start-dev'
+    command: sh -c 'npm install --unsafe-perms && npm run start-dev'
     ports:
       - 8888:80
     volumes:
