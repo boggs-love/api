@@ -1,4 +1,5 @@
 import sendEmails from '../actions/send-emails';
+import updatePlaylist from '../actions/update-playlist';
 import RSVP from '../entities/rsvp';
 import Guest from '../entities/guest';
 import Song from '../entities/song';
@@ -27,7 +28,9 @@ const create = async ({ payload }, h) => {
 
   const response = h.response(rsvp);
 
-  response.events.once('finish', () => sendEmails(rsvp));
+  response.events.once('finish', () => (
+    Promise.all([sendEmails(rsvp), updatePlaylist(rsvp)])
+  ));
 
   return response;
 };

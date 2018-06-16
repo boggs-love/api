@@ -66,7 +66,7 @@ const sendEmails = (rsvp) => {
       })),
     }),
   ]).catch((e) => {
-    console.log('Send Mail Failed');
+    console.error('Send Mail Failed');
     console.error(e);
   });
 };
