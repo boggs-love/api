@@ -6,11 +6,11 @@ const playlistId = process.env.SPOTIFY_PLAYLIST_ID;
 
 const updatePlaylist = async (rsvp) => {
   if (!userId || !playlistId) {
-    return [];
+    return undefined;
   }
 
   if (!rsvp.songs) {
-    return [];
+    return undefined;
   }
 
   return createSpotify().then(spotify => (
@@ -20,7 +20,7 @@ const updatePlaylist = async (rsvp) => {
       ));
 
       if (!ids) {
-        return [];
+        return undefined;
       }
 
       return spotify.addTracksToPlaylist(userId, playlistId, ids.map(id => `spotify:track:${id}`));
