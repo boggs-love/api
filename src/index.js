@@ -1,7 +1,10 @@
 import Hapi from 'hapi';
 import Boom from 'boom';
+import Raven from 'raven';
 import spotifySearch from './controllers/spotify';
 import rsvpCreate from './controllers/rsvp';
+
+Raven.config().install();
 
 const server = Hapi.server({
   port: 80,
@@ -29,7 +32,7 @@ server.ext('onPreResponse', (request, h) => {
       return error;
     }
 
-    console.error(response.message);
+    Raven.captureException(response);
   }
 
   return h.continue;
@@ -41,8 +44,7 @@ const init = async () => {
   console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('unhandledRejection', (err) => {
-  console.log(err);
+process.on('unhandledRejection', () => {
   process.exit(1);
 });
 
